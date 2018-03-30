@@ -27,17 +27,11 @@ read_loop(FlHndl, CurrentLine, FileAkku, FileContent) :-
         ; is_newline(FlHndl, CharCode, CurrentLine, FileAkku, FileContent)
         ; append_char(FlHndl, CharCode, CurrentLine, FileAkku, FileContent)).
 
-/*Creates all possible solution, and stores it in X*/
-permute([], []).
-permute([X|Rest], L) :-
-    permute(Rest, L1),
-    select(X, L, L1).
-
 main(InputFile, OutputFile) :-
     open(OutputFile, write, OS),
     (   read_file(InputFile,InputLines),
         member(Line, InputLines),
-        permute([1,2,3], X),
+        permutation([1,2,3], X),
         write(X), nl,
         write(OS,X),nl(OS),
         false
