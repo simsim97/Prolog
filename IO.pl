@@ -1,3 +1,7 @@
+/* Found this pice of code that allows to take command line input*/
+:- initialization(commandline).
+commandline :- argument_value(1, X), argument_value(2, Y), write(X), write(Y), write('\n'), main(X,Y).
+
 is_eof(FlHndl, CharCode, CurrentLine, FileAkku, FileContent) :-
         CharCode == -1,
         append(FileAkku, [CurrentLine], FileContent),
@@ -23,12 +27,19 @@ read_loop(FlHndl, CurrentLine, FileAkku, FileContent) :-
         ; is_newline(FlHndl, CharCode, CurrentLine, FileAkku, FileContent)
         ; append_char(FlHndl, CharCode, CurrentLine, FileAkku, FileContent)).
 
+/*Creates all possible solution, and stores it in X*/
+permute([], []).
+permute([X|Rest], L) :-
+    permute(Rest, L1),
+    select(X, L, L1).
+
 main(InputFile, OutputFile) :-
     open(OutputFile, write, OS),
     (   read_file(InputFile,InputLines),
         member(Line, InputLines),
-        write(Line), nl,
-        write(OS,Line),nl(OS),
+        permute([1,2,3], X),
+        write(X), nl,
+        write(OS,X),nl(OS),
         false
         ;
         close(OS)
